@@ -1,6 +1,6 @@
 import unittest
 from flask import Flask
-from app import app, db, User
+from app import app, db, User, Post
 
 class BloglyAppTestCase(unittest.TestCase):
 
@@ -42,6 +42,28 @@ class BloglyAppTestCase(unittest.TestCase):
         """Test the new_user route"""
         response = self.client.get('/users/new')
         self.assertEqual(response.status_code, 200)
+
+
+    # def test_make_new_post(self):
+    #   """Test the make_new_post route"""
+    #   response = self.client.get('/users/1/posts/new') 
+    #   self.assertEqual(response.status_code, 200)
+
+
+    def test_post_details(self):
+        """Test the post_details route"""
+        # Create a user and a post for testing
+        user = User(first_name='John', last_name='Doe', image_url='image.jpg')
+        db.session.add(user)
+        db.session.commit()
+
+        post = Post(title='Test Post', content='Test content', user_id=user.id)
+        db.session.add(post)
+        db.session.commit()
+
+        response = self.client.get(f'/posts/{post.id}')
+        self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
