@@ -1,4 +1,4 @@
-from models import User, db
+from models import User, Post, Tag, PostTag, db
 from app import app
 
 # create tables
@@ -13,8 +13,35 @@ harry = User(first_name='Harry', last_name='Potter', image_url='https://images.u
 hermione = User(first_name='Hermione', last_name='Granger', image_url='https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGFycnklMjBwb3R0ZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60')
 ron = User(first_name='Ronald', last_name='Weasley')
 
-db.session.add(harry)
-db.session.add(hermione)
-db.session.add(ron)
+# add content
+har1 = Post(title="First Post", content="Something interesting", user_id=1)
+har2 = Post(title="Second Post", content="Something interesting", user_id=1)
+har3 = Post(title="Third Post", content="Something interesting", user_id=1)
+herm1 = Post(title="First Post", content="Something interesting", user_id=2)
+herm2 = Post(title="Second Post", content="Something interesting", user_id=2)
+herm3 = Post(title="Third Post", content="Something interesting", user_id=2)
+ron1 = Post(title="First Post", content="Something interesting", user_id=3)
+ron2 = Post(title="Second Post", content="Something interesting", user_id=3)
+ron3 = Post(title="Third Post", content="Something interesting", user_id=3)
 
+# add tags
+funny = Tag(name="funny")
+cute = Tag(name="cute")
+magic = Tag(name="magic")
+
+# interconnect post_tags 
+hpt = PostTag(post_id=1, tag_id=3)
+hgt = PostTag(post_id=4, tag_id=2)
+rwt = PostTag(post_id=7, tag_id=1)
+
+db.session.add_all([harry, hermione, ron])
+db.session.commit()
+
+db.session.add_all([har1, har2, har3, herm1, herm2, herm3, ron1, ron2, ron3])
+db.session.commit()
+
+db.session.add_all([funny, cute, magic])
+db.session.commit()
+
+db.session.add_all([hpt, hgt, rwt])
 db.session.commit()
